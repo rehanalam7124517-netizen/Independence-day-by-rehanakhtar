@@ -1,0 +1,751 @@
+/* ======================================
+   🇮🇳 ɪɴᴅᴇᴘᴇɴᴅᴇɴᴄᴇ ᴅᴀʏ 2026
+====================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+font-family:"Segoe UI",sans-serif;
+}
+
+:root{
+--orange:#ff9933;
+--white:#ffffff;
+--green:#138808;
+--blue:#0a5cff;
+--dark:#08111f;
+--glass:rgba(255,255,255,.08);
+}
+
+body{
+background:linear-gradient(180deg,#06121f,#0b2038,#102d4f);
+color:#fff;
+overflow-x:hidden;
+}
+
+img{
+max-width:100%;
+display:block;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+button{
+cursor:pointer;
+border:none;
+outline:none;
+transition:.35s;
+}
+
+section{
+padding:80px 20px;
+}
+
+.glass{
+width:min(1100px,95%);
+margin:auto;
+background:var(--glass);
+backdrop-filter:blur(14px);
+border:1px solid rgba(255,255,255,.15);
+border-radius:28px;
+padding:35px;
+box-shadow:0 15px 45px rgba(0,0,0,.35);
+}
+
+h1,h2,h3{
+text-align:center;
+letter-spacing:2px;
+}
+
+p{
+line-height:1.8;
+text-align:center;
+margin-top:15px;
+}
+
+/* ======================================
+   🟧 LOADING SCREEN
+====================================== */
+
+#loader{
+position:fixed;
+inset:0;
+background:linear-gradient(180deg,#06121f,#102d4f,#138808);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:99999;
+transition:.8s;
+}
+
+.loader-box{
+text-align:center;
+}
+
+.loader-logo{
+width:120px;
+margin:auto;
+animation:logoPop 1.5s infinite alternate;
+}
+
+.loader-chakra{
+width:80px;
+margin:20px auto;
+animation:spin 6s linear infinite;
+}
+
+.loader-box h1{
+margin-top:15px;
+font-size:2rem;
+color:#fff;
+}
+
+.loader-box p{
+margin:15px 0;
+color:#ddd;
+}
+
+.loading-bar{
+width:280px;
+height:10px;
+margin:auto;
+background:rgba(255,255,255,.2);
+border-radius:30px;
+overflow:hidden;
+}
+
+.loading-progress{
+width:0%;
+height:100%;
+background:linear-gradient(90deg,#ff9933,#ffffff,#138808);
+animation:loading 4s linear forwards;
+}
+
+/* ======================================
+   🎵 MUSIC BUTTON
+====================================== */
+
+#musicToggle{
+position:fixed;
+right:20px;
+bottom:20px;
+width:60px;
+height:60px;
+border-radius:50%;
+background:linear-gradient(135deg,#ff9933,#138808);
+color:#fff;
+font-size:24px;
+box-shadow:0 0 25px rgba(255,153,51,.5);
+z-index:999;
+}
+
+#musicToggle:hover{
+transform:scale(1.1);
+}
+
+/* ======================================
+   ANIMATIONS
+====================================== */
+
+@keyframes spin{
+from{
+transform:rotate(0deg);
+}
+to{
+transform:rotate(360deg);
+}
+}
+
+@keyframes logoPop{
+from{
+transform:scale(.9);
+}
+to{
+transform:scale(1.08);
+}
+}
+
+@keyframes loading{
+from{
+width:0%;
+}
+to{
+width:100%;
+}
+}
+
+/* ======================================
+   🇮🇳 HERO SECTION
+====================================== */
+
+#hero{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+overflow:hidden;
+background:
+linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.55)),
+url("images/tiranga.jpg") center/cover no-repeat;
+}
+
+.hero-overlay{
+position:absolute;
+inset:0;
+backdrop-filter:blur(2px);
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+text-align:center;
+width:min(900px,95%);
+padding:40px;
+}
+
+.hero-logo{
+width:140px;
+margin:auto;
+animation:heroLogo 3s ease-in-out infinite;
+filter:drop-shadow(0 0 25px rgba(255,255,255,.6));
+}
+
+.hero-content h1{
+margin-top:20px;
+font-size:3rem;
+color:#fff;
+text-shadow:0 0 20px rgba(255,153,51,.7);
+}
+
+.hero-text{
+max-width:750px;
+margin:25px auto;
+font-size:1.1rem;
+color:#f4f4f4;
+}
+
+#countdown{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+margin-top:35px;
+}
+
+#countdown div{
+width:95px;
+padding:18px;
+border-radius:20px;
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,.2);
+box-shadow:0 0 20px rgba(255,255,255,.08);
+}
+
+#countdown span{
+display:block;
+font-size:2rem;
+font-weight:bold;
+color:#ff9933;
+}
+
+#countdown p{
+margin-top:8px;
+font-size:.9rem;
+}
+
+#exploreBtn{
+margin-top:35px;
+padding:16px 36px;
+border-radius:50px;
+font-size:1rem;
+font-weight:bold;
+color:#fff;
+background:linear-gradient(90deg,#ff9933,#138808);
+box-shadow:0 0 25px rgba(255,153,51,.45);
+}
+
+#exploreBtn:hover{
+transform:translateY(-4px) scale(1.05);
+box-shadow:0 0 35px rgba(19,136,8,.6);
+}
+
+@keyframes heroLogo{
+0%,100%{
+transform:translateY(0);
+}
+50%{
+transform:translateY(-10px);
+}
+}
+
+/* ======================================
+   📖 ABOUT SECTION
+====================================== */
+
+#about{
+padding:90px 20px;
+}
+
+#about h2{
+font-size:2.2rem;
+margin-bottom:20px;
+color:#ff9933;
+}
+
+#about p{
+max-width:850px;
+margin:auto;
+font-size:1.05rem;
+color:#f1f1f1;
+}
+
+/* ======================================
+   🦁 FREEDOM FIGHTERS
+====================================== */
+
+#fighters{
+padding:90px 20px;
+}
+
+.fighters-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+margin-top:40px;
+}
+
+.fighter-card{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,.12);
+border-radius:24px;
+padding:20px;
+text-align:center;
+transition:.4s;
+box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+
+.fighter-card:hover{
+transform:translateY(-10px);
+box-shadow:0 0 35px rgba(255,153,51,.45);
+}
+
+.fighter-card img{
+width:100%;
+height:320px;
+object-fit:cover;
+border-radius:18px;
+margin-bottom:18px;
+border:3px solid rgba(255,255,255,.15);
+}
+
+.fighter-card h3{
+font-size:1.15rem;
+margin-bottom:15px;
+color:#fff;
+}
+
+.fighter-card button{
+padding:12px 26px;
+border-radius:30px;
+background:linear-gradient(90deg,#ff9933,#138808);
+color:#fff;
+font-weight:bold;
+transition:.3s;
+}
+
+.fighter-card button:hover{
+transform:scale(1.08);
+}
+
+/* ======================================
+   POPUP MODAL
+====================================== */
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.75);
+justify-content:center;
+align-items:center;
+z-index:99999;
+padding:20px;
+}
+
+.modal-box{
+width:min(700px,95%);
+background:#0d1b2a;
+border-radius:25px;
+padding:30px;
+position:relative;
+text-align:center;
+border:2px solid rgba(255,255,255,.15);
+}
+
+.modal-box img{
+width:220px;
+height:280px;
+object-fit:cover;
+border-radius:18px;
+margin:auto;
+margin-bottom:20px;
+}
+
+#closeModal{
+position:absolute;
+top:15px;
+right:20px;
+font-size:32px;
+cursor:pointer;
+color:#fff;
+}
+
+/* ======================================
+   📜 TIMELINE
+====================================== */
+
+#timeline{
+padding:90px 20px;
+}
+
+.timeline{
+display:flex;
+flex-direction:column;
+gap:25px;
+margin-top:40px;
+}
+
+.timeline-card{
+padding:22px;
+border-left:6px solid #ff9933;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(15px);
+border-radius:18px;
+transition:.35s;
+}
+
+.timeline-card:hover{
+transform:translateX(10px);
+box-shadow:0 0 30px rgba(255,153,51,.35);
+}
+
+.timeline-card h3{
+text-align:left;
+color:#ff9933;
+margin-bottom:10px;
+}
+
+.timeline-card p{
+text-align:left;
+margin:0;
+}
+
+/* ======================================
+   🇮🇳 KNOW INDIA
+====================================== */
+
+#india{
+padding:90px 20px;
+}
+
+.india-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+margin-top:35px;
+}
+
+.india-card{
+background:rgba(255,255,255,.08);
+border-radius:22px;
+padding:20px;
+text-align:center;
+transition:.35s;
+}
+
+.india-card:hover{
+transform:translateY(-8px);
+}
+
+.india-card img{
+width:120px;
+height:120px;
+object-fit:contain;
+margin:auto;
+margin-bottom:15px;
+}
+
+/* ======================================
+   🧠 QUIZ
+====================================== */
+
+#quiz{
+padding:90px 20px;
+text-align:center;
+}
+
+#startQuiz{
+margin-top:25px;
+padding:15px 35px;
+border-radius:40px;
+background:linear-gradient(90deg,#ff9933,#138808);
+color:#fff;
+font-size:18px;
+}
+
+#quizContainer{
+margin-top:35px;
+}
+
+/* ======================================
+   🏆 CERTIFICATE
+====================================== */
+
+#certificate{
+padding:90px 20px;
+text-align:center;
+}
+
+#userName{
+width:100%;
+max-width:450px;
+padding:15px;
+margin:25px auto;
+display:block;
+border:none;
+border-radius:15px;
+font-size:18px;
+}
+
+#downloadCertificate{
+padding:15px 35px;
+border-radius:40px;
+background:gold;
+color:#000;
+font-weight:bold;
+}
+
+/* ======================================
+   ✍️ DIGITAL PLEDGE
+====================================== */
+
+#pledge{
+padding:90px 20px;
+}
+
+#pledgeBtn{
+margin-top:25px;
+padding:16px 35px;
+border-radius:40px;
+background:linear-gradient(90deg,#ff9933,#138808);
+color:#fff;
+font-size:18px;
+}
+
+#pledgeBtn:hover,
+#downloadCertificate:hover,
+#startQuiz:hover{
+transform:scale(1.05);
+}
+
+/* ======================================
+   ❤️ FOOTER
+====================================== */
+
+footer{
+padding:50px 20px;
+text-align:center;
+background:rgba(0,0,0,.35);
+border-top:1px solid rgba(255,255,255,.12);
+}
+
+footer img{
+width:80px;
+margin:0 auto 15px;
+}
+
+footer p{
+color:#ddd;
+font-size:.95rem;
+}
+
+/* ======================================
+   ✨ FLOATING PARTICLES
+====================================== */
+
+.particle{
+position:fixed;
+width:6px;
+height:6px;
+border-radius:50%;
+background:#fff;
+opacity:.8;
+pointer-events:none;
+animation:particleFloat 12s linear infinite;
+}
+
+@keyframes particleFloat{
+0%{
+transform:translateY(100vh) scale(.3);
+opacity:0;
+}
+20%{
+opacity:1;
+}
+100%{
+transform:translateY(-120px) scale(1);
+opacity:0;
+}
+}
+
+/* ======================================
+   🎊 CONFETTI
+====================================== */
+
+.confetti{
+position:fixed;
+width:10px;
+height:18px;
+pointer-events:none;
+animation:confettiFall 5s linear forwards;
+}
+
+@keyframes confettiFall{
+0%{
+transform:translateY(-50px) rotate(0deg);
+opacity:1;
+}
+100%{
+transform:translateY(110vh) rotate(720deg);
+opacity:0;
+}
+}
+
+/* ======================================
+   ☁️ CLOUDS
+====================================== */
+
+.cloud{
+position:absolute;
+opacity:.35;
+animation:cloudMove 45s linear infinite;
+}
+
+@keyframes cloudMove{
+from{
+transform:translateX(-250px);
+}
+to{
+transform:translateX(calc(100vw + 300px));
+}
+}
+
+/* ======================================
+   🕊️ BIRDS
+====================================== */
+
+.bird{
+position:absolute;
+font-size:28px;
+animation:birdFly 18s linear infinite;
+}
+
+@keyframes birdFly{
+0%{
+transform:translateX(-100px);
+}
+100%{
+transform:translateX(calc(100vw + 120px));
+}
+}
+
+/* ======================================
+   📱 RESPONSIVE
+====================================== */
+
+@media(max-width:768px){
+
+.hero-content h1{
+font-size:2rem;
+}
+
+.hero-logo{
+width:100px;
+}
+
+#countdown{
+gap:12px;
+}
+
+#countdown div{
+width:80px;
+padding:14px;
+}
+
+.glass{
+padding:22px;
+}
+
+.fighters-grid,
+.india-grid{
+grid-template-columns:1fr;
+}
+
+.timeline-card{
+padding:18px;
+}
+
+.modal-box{
+padding:20px;
+}
+
+.modal-box img{
+width:180px;
+height:230px;
+}
+
+#musicToggle{
+width:55px;
+height:55px;
+font-size:22px;
+right:15px;
+bottom:15px;
+}
+
+button{
+width:100%;
+}
+
+}
+
+@media(max-width:480px){
+
+.hero-content h1{
+font-size:1.6rem;
+}
+
+.hero-text{
+font-size:.95rem;
+}
+
+#countdown span{
+font-size:1.5rem;
+}
+
+.loader-logo{
+width:90px;
+}
+
+.loader-chakra{
+width:65px;
+}
+
+}
