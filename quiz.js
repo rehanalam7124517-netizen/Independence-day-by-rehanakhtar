@@ -56,6 +56,7 @@ let score = 0;
 const quizContainer = document.getElementById("quizContainer");
 
 function loadQuestion() {
+  if (!quizContainer) return;
   const q = quizData[currentQuestion];
   quizContainer.innerHTML = `
     <div class="quiz-card">
@@ -78,6 +79,7 @@ function checkAnswer(selectedIndex) {
   if (currentQuestion < quizData.length) {
     loadQuestion();
   } else {
+    if (!quizContainer) return;
     quizContainer.innerHTML = `
       <div class="quiz-card">
         <h3>Quiz complete</h3>
@@ -89,8 +91,10 @@ function checkAnswer(selectedIndex) {
   }
 }
 
-startQuiz.addEventListener("click", () => {
-  currentQuestion = 0;
-  score = 0;
-  loadQuestion();
-});
+if (startQuiz) {
+  startQuiz.addEventListener("click", () => {
+    currentQuestion = 0;
+    score = 0;
+    loadQuestion();
+  });
+}

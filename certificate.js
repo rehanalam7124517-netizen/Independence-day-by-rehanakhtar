@@ -1,13 +1,22 @@
 const certificateBtn = document.getElementById("downloadCertificate");
 const nameInput = document.getElementById("userName");
 
-certificateBtn.addEventListener("click", downloadCertificate);
+if (certificateBtn) {
+  certificateBtn.addEventListener("click", () => downloadCertificate());
+}
 
-function downloadCertificate() {
+async function downloadCertificate() {
+  if (!nameInput) return;
   const name = nameInput.value.trim();
   if (!name) {
-    window.showToast("Please enter your name first");
+    if (window.showToast) {
+      window.showToast("Please enter your name first");
+    }
     return;
+  }
+
+  if (document.fonts && document.fonts.ready) {
+    await document.fonts.ready;
   }
 
   const canvas = document.createElement("canvas");
@@ -28,24 +37,28 @@ function downloadCertificate() {
 
   ctx.fillStyle = "#0b1d35";
   ctx.textAlign = "center";
-  ctx.font = "700 66px 'Playfair Display', serif";
+  ctx.font = "700 70px 'Playfair Display', serif";
   ctx.fillText("Certificate of Achievement", 900, 220);
 
   ctx.font = "500 40px 'Inter', sans-serif";
   ctx.fillText("Presented to", 900, 320);
 
   ctx.fillStyle = "#b22222";
-  ctx.font = "700 72px 'Playfair Display', serif";
+  ctx.font = "700 78px 'Playfair Display', serif";
   ctx.fillText(name, 900, 430);
 
   ctx.fillStyle = "#111";
   ctx.font = "36px 'Inter', sans-serif";
-  ctx.fillText("for successfully completing the Independence Day 2026 Quiz", 900, 540);
-  ctx.fillText("and showing a deep appreciation for India’s history and freedom", 900, 600);
+  ctx.fillText("for successfully completing the Independence Day 2026 tribute", 900, 550);
+  ctx.fillText("and showing deep appreciation for India’s history and freedom", 900, 610);
 
-  const today = new Date().toLocaleDateString();
+  const today = new Date().toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
   ctx.font = "32px 'Inter', sans-serif";
-  ctx.fillText(`Date: ${today}`, 900, 760);
+  ctx.fillText(`Issued on ${today}`, 900, 760);
   ctx.fillText("Happy Independence Day 🇮🇳", 900, 840);
   ctx.font = "28px 'Inter', sans-serif";
   ctx.fillText("Designed with care for the Republic of India", 900, 940);
@@ -56,5 +69,7 @@ function downloadCertificate() {
   document.body.appendChild(link);
   link.click();
   link.remove();
-  window.showToast("Certificate downloaded");
+  if (window.showToast) {
+    window.showToast("Certificate downloaded");
+  }
 }

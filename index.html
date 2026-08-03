@@ -83,42 +83,32 @@
         <div class="fighter-card">
           <img src="images/gandhi.jpg" alt="Mahatma Gandhi">
           <h3>Mahatma Gandhi</h3>
-          <button data-fighter="gandhi">Read more</button>
+          <button data-fighter="gandhi">Read More</button>
         </div>
         <div class="fighter-card">
           <img src="images/bhagat.jpg" alt="Bhagat Singh">
           <h3>Bhagat Singh</h3>
-          <button data-fighter="bhagat">Read more</button>
+          <button data-fighter="bhagat">Read More</button>
         </div>
         <div class="fighter-card">
           <img src="images/bose.jpg" alt="Subhas Chandra Bose">
           <h3>Subhas Chandra Bose</h3>
-          <button data-fighter="bose">Read more</button>
+          <button data-fighter="bose">Read More</button>
         </div>
         <div class="fighter-card">
           <img src="images/azad.jpg" alt="Chandrashekhar Azad">
           <h3>Chandrashekhar Azad</h3>
-          <button data-fighter="azad">Read more</button>
+          <button data-fighter="azad">Read More</button>
         </div>
         <div class="fighter-card">
           <img src="images/lakshmibai.jpg" alt="Rani Lakshmibai">
           <h3>Rani Lakshmibai</h3>
-          <button data-fighter="lakshmibai">Read more</button>
+          <button data-fighter="lakshmibai">Read More</button>
         </div>
         <div class="fighter-card">
           <img src="images/ambedkar.jpg" alt="Dr. B. R. Ambedkar">
           <h3>Dr. B. R. Ambedkar</h3>
-          <button data-fighter="ambedkar">Read more</button>
-        </div>
-        <div class="fighter-card">
-          <img src="images/kalam.jpg" alt="A. P. J. Abdul Kalam">
-          <h3>Dr. A. P. J. Abdul Kalam</h3>
-          <button data-fighter="kalam">Read more</button>
-        </div>
-        <div class="fighter-card">
-          <img src="images/indianlogo.png" alt="Mangal Pandey">
-          <h3>Mangal Pandey</h3>
-          <button data-fighter="mangal">Read more</button>
+          <button data-fighter="ambedkar">Read More</button>
         </div>
       </div>
     </div>
@@ -213,12 +203,15 @@
     </div>
   </footer>
 
-  <div id="fighterModal" class="modal">
+  <div id="fighterModal" class="modal" aria-hidden="true">
     <div class="modal-box">
-      <span id="closeModal">×</span>
+      <button id="closeModal" aria-label="Close details">×</button>
       <img id="modalImage" src="" alt="Freedom Fighter">
-      <h2 id="modalTitle"></h2>
-      <p id="modalText"></p>
+      <div class="modal-content">
+        <h2 id="modalTitle"></h2>
+        <div id="modalMeta" class="modal-meta"></div>
+        <div id="modalBio" class="modal-bio"></div>
+      </div>
     </div>
   </div>
 
