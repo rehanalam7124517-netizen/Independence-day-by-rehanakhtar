@@ -1,91 +1,60 @@
-/* ======================================
-   🇮🇳 ᴄᴇʀᴛɪꜰɪᴄᴀᴛᴇ ꜱʏꜱᴛᴇᴍ
-====================================== */
+const certificateBtn = document.getElementById("downloadCertificate");
+const nameInput = document.getElementById("userName");
 
-const certificateBtn=document.getElementById("downloadCertificate");
+certificateBtn.addEventListener("click", downloadCertificate);
 
-const nameInput=document.getElementById("userName");
+function downloadCertificate() {
+  const name = nameInput.value.trim();
+  if (!name) {
+    window.showToast("Please enter your name first");
+    return;
+  }
 
-certificateBtn.disabled=true;
+  const canvas = document.createElement("canvas");
+  canvas.width = 1800;
+  canvas.height = 1200;
+  const ctx = canvas.getContext("2d");
 
-certificateBtn.addEventListener("click",downloadCertificate);
+  const bg = ctx.createLinearGradient(0, 0, 1800, 1200);
+  bg.addColorStop(0, "#ff9933");
+  bg.addColorStop(0.5, "#ffffff");
+  bg.addColorStop(1, "#138808");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 1800, 1200);
 
-function downloadCertificate(){
+  ctx.strokeStyle = "#0b1d35";
+  ctx.lineWidth = 20;
+  ctx.strokeRect(42, 42, 1716, 1116);
 
-const name=nameInput.value.trim();
+  ctx.fillStyle = "#0b1d35";
+  ctx.textAlign = "center";
+  ctx.font = "700 66px 'Playfair Display', serif";
+  ctx.fillText("Certificate of Achievement", 900, 220);
 
-if(name===""){
+  ctx.font = "500 40px 'Inter', sans-serif";
+  ctx.fillText("Presented to", 900, 320);
 
-alert("ᴘʟᴇᴀꜱᴇ ᴇɴᴛᴇʀ ʏᴏᴜʀ ɴᴀᴍᴇ.");
+  ctx.fillStyle = "#b22222";
+  ctx.font = "700 72px 'Playfair Display', serif";
+  ctx.fillText(name, 900, 430);
 
-return;
+  ctx.fillStyle = "#111";
+  ctx.font = "36px 'Inter', sans-serif";
+  ctx.fillText("for successfully completing the Independence Day 2026 Quiz", 900, 540);
+  ctx.fillText("and showing a deep appreciation for India’s history and freedom", 900, 600);
 
+  const today = new Date().toLocaleDateString();
+  ctx.font = "32px 'Inter', sans-serif";
+  ctx.fillText(`Date: ${today}`, 900, 760);
+  ctx.fillText("Happy Independence Day 🇮🇳", 900, 840);
+  ctx.font = "28px 'Inter', sans-serif";
+  ctx.fillText("Designed with care for the Republic of India", 900, 940);
+
+  const link = document.createElement("a");
+  link.download = "independence-day-certificate.png";
+  link.href = canvas.toDataURL("image/png");
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.showToast("Certificate downloaded");
 }
-
-const canvas=document.createElement("canvas");
-
-canvas.width=1600;
-
-canvas.height=1100;
-
-const ctx=canvas.getContext("2d");
-
-const gradient=ctx.createLinearGradient(0,0,1600,1100);
-
-gradient.addColorStop(0,"#ff9933");
-gradient.addColorStop(.5,"#ffffff");
-gradient.addColorStop(1,"#138808");
-
-ctx.fillStyle=gradient;
-ctx.fillRect(0,0,1600,1100);
-
-ctx.lineWidth=18;
-ctx.strokeStyle="#0b1d35";
-ctx.strokeRect(40,40,1520,1020);
-
-ctx.textAlign="center";
-
-ctx.fillStyle="#0b1d35";
-ctx.font="bold 70px serif";
-ctx.fillText("ᴄᴇʀᴛɪꜰɪᴄᴀᴛᴇ ᴏꜰ ᴀᴄʜɪᴇᴠᴇᴍᴇɴᴛ",800,150);
-
-ctx.font="42px serif";
-ctx.fillText("ᴘʀᴇꜱᴇɴᴛᴇᴅ ᴛᴏ",800,250);
-
-ctx.fillStyle="#b22222";
-ctx.font="bold 72px serif";
-ctx.fillText(name,800,360);
-
-ctx.fillStyle="#111";
-ctx.font="34px serif";
-
-ctx.fillText("ꜰᴏʀ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ ᴄᴏᴍᴘʟᴇᴛɪɴɢ",800,470);
-
-ctx.fillText("ᴛʜᴇ ɪɴᴅᴇᴘᴇɴᴅᴇɴᴄᴇ ᴅᴀʏ 2026 Qᴜɪᴢ",800,530);
-
-ctx.fillText("ᴀɴᴅ ꜱʜᴏᴡɪɴɢ ᴇxᴄᴇʟʟᴇɴᴛ ᴋɴᴏᴡʟᴇᴅɢᴇ",800,590);
-
-ctx.fillText("ᴏꜰ ɪɴᴅɪᴀ'ꜱ ʜɪꜱᴛᴏʀʏ ᴀɴᴅ ꜰʀᴇᴇᴅᴏᴍ",800,650);
-
-const today=new Date().toLocaleDateString();
-
-ctx.font="30px serif";
-
-ctx.fillText("ᴅᴀᴛᴇ : "+today,800,760);
-
-ctx.fillText("ʜᴀᴘᴘʏ ɪɴᴅᴇᴘᴇɴᴅᴇɴᴄᴇ ᴅᴀʏ 🇮🇳",800,870);
-
-ctx.font="28px serif";
-
-ctx.fillText("ᴅᴇꜱɪɢɴᴇᴅ ʙʏ ʀᴇʜᴀɴ ᴀᴋʜᴛᴀʀ",800,950);
-
-const link=document.createElement("a");
-
-link.download="ɪɴᴅᴇᴘᴇɴᴅᴇɴᴄᴇ-ᴅᴀʏ-ᴄᴇʀᴛɪꜰɪᴄᴀᴛᴇ.png";
-
-link.href=canvas.toDataURL("image/png");
-
-link.click();
-
-}
-
