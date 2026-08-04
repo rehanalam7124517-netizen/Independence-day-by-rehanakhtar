@@ -73,13 +73,9 @@ button {
   cursor: pointer;
   border: none;
   outline: none;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  transition: box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
   font: inherit;
   text-align: center;
-}
-
-button:hover {
-  transform: translateY(-2px);
 }
 
 section {
@@ -293,34 +289,6 @@ p, span, li, input, textarea {
   animation: loading 1.6s ease forwards;
 }
 
-#musicToggle {
-  position: fixed;
-  right: 18px;
-  bottom: 90px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--orange), var(--green));
-  color: #fff;
-  font-size: 22px;
-  box-shadow: 0 16px 35px rgba(255, 153, 51, 0.25);
-  z-index: 1400;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#musicToggle.music-blocked {
-  width: auto;
-  height: auto;
-  padding: 12px 16px;
-  border-radius: 999px;
-  font-size: 0.92rem;
-  font-weight: 700;
-  right: 16px;
-  bottom: 24px;
-}
-
 #hero {
   min-height: 100vh;
   display: flex;
@@ -450,7 +418,6 @@ p, span, li, input, textarea {
 #shareButton:hover,
 .fighter-card button:hover,
 .quiz-option:hover {
-  transform: translateY(-3px) scale(1.01);
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.25);
 }
 
@@ -470,7 +437,7 @@ p, span, li, input, textarea {
   border-radius: 24px;
   padding: 20px;
   box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .fighter-card {
@@ -482,7 +449,6 @@ p, span, li, input, textarea {
 .fighter-card:hover,
 .india-card:hover,
 .timeline-card:hover {
-  transform: translateY(-8px);
   box-shadow: 0 28px 50px rgba(0, 0, 0, 0.26);
   border-color: rgba(255, 153, 51, 0.35);
 }
@@ -736,13 +702,11 @@ p, span, li, input, textarea {
   box-shadow: 0 14px 30px rgba(255, 153, 51, 0.25);
   z-index: 1500;
   opacity: 0;
-  transform: translateY(14px);
   pointer-events: none;
 }
 
 #backToTop.show {
   opacity: 1;
-  transform: translateY(0);
   pointer-events: auto;
 }
 
@@ -899,11 +863,4 @@ footer h3 {
     border-radius: 999px;
   }
 
-  #musicToggle.music-blocked {
-    width: 100%;
-    justify-content: center;
-    right: 14px;
-    left: 14px;
-    bottom: 16px;
-  }
 }

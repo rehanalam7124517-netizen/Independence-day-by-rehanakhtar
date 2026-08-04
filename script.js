@@ -1,6 +1,5 @@
 const loader = document.getElementById("loader");
 const bgMusic = document.getElementById("bgMusic");
-const musicToggle = document.getElementById("musicToggle");
 const exploreBtn = document.getElementById("exploreBtn");
 const shareButton = document.getElementById("shareButton");
 const progressBar = document.getElementById("scrollProgress");
@@ -18,7 +17,6 @@ const modalBio = document.getElementById("modalBio");
 const visitorCount = document.getElementById("visitorCount");
 
 let musicEnabled = false;
-let musicBlocked = false;
 
 window.addEventListener("load", () => {
   const activeLoader = document.getElementById("loader");
@@ -38,30 +36,16 @@ const updateVisitorCount = () => {
 
 updateVisitorCount();
 
-const setMusicButtonState = () => {
-  if (!musicToggle) return;
-  if (musicBlocked) {
-    musicToggle.classList.add("music-blocked");
-    musicToggle.textContent = "▶ Play music";
-    return;
-  }
-  musicToggle.classList.remove("music-blocked");
-  musicToggle.textContent = bgMusic && !bgMusic.paused ? "🔊" : "🔇";
-};
-
 const playMusic = async () => {
   if (!bgMusic) return false;
   bgMusic.volume = 0.55;
+  bgMusic.loop = true;
   try {
     await bgMusic.play();
-    musicBlocked = false;
     musicEnabled = true;
-    setMusicButtonState();
     return true;
   } catch {
-    musicBlocked = true;
-    musicEnabled = true;
-    setMusicButtonState();
+    musicEnabled = false;
     return false;
   }
 };
@@ -69,19 +53,7 @@ const playMusic = async () => {
 const pauseMusic = () => {
   if (!bgMusic) return;
   bgMusic.pause();
-  setMusicButtonState();
 };
-
-if (musicToggle && bgMusic) {
-  musicToggle.addEventListener("click", async () => {
-    if (bgMusic.paused) {
-      await playMusic();
-    } else {
-      musicEnabled = false;
-      pauseMusic();
-    }
-  });
-}
 
 const resumeMusicOnInteraction = () => {
   if (bgMusic && bgMusic.paused) {
@@ -342,6 +314,10 @@ document.querySelectorAll(".fighter-card button").forEach((button) => {
     if (modalImage) {
       modalImage.src = fighter.image;
       modalImage.alt = fighter.title;
+      modalImage.onerror = () => {
+        modalImage.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Crect width='600' height='600' fill='%2307111c'/%3E%3Ccircle cx='300' cy='300' r='220' fill='none' stroke='%23ff9933' stroke-width='24'/%3E%3Cpath d='M240 220h120l80 160h-120l-80-160z' fill='%23ff9933'/%3E%3Cpath d='M258 270h84' stroke='%23ffffff' stroke-width='16' stroke-linecap='round'/%3E%3C/svg%3E";
+        modalImage.onerror = null;
+      };
     }
     if (modalTitle) modalTitle.textContent = fighter.title;
     if (modalMeta) {
@@ -411,7 +387,11 @@ const applyFallbackImages = () => {
     image.addEventListener("error", () => {
       if (image.dataset.fallbackApplied === "true") return;
       image.dataset.fallbackApplied = "true";
-      image.src = "images/indianlogo.png";
+      if (image.id === "modalImage") {
+        image.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Crect width='600' height='600' fill='%2307111c'/%3E%3Ccircle cx='300' cy='300' r='220' fill='none' stroke='%23ff9933' stroke-width='24'/%3E%3Cpath d='M240 220h120l80 160h-120l-80-160z' fill='%23ff9933'/%3E%3Cpath d='M258 270h84' stroke='%23ffffff' stroke-width='16' stroke-linecap='round'/%3E%3C/svg%3E";
+      } else {
+        image.src = "images/indianlogo.png";
+      }
     }, { once: true });
   });
 };
