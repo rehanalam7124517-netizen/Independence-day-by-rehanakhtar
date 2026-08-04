@@ -17,11 +17,16 @@ const modalMeta = document.getElementById("modalMeta");
 const modalBio = document.getElementById("modalBio");
 const visitorCount = document.getElementById("visitorCount");
 
+let musicEnabled = false;
+let musicBlocked = false;
+
 window.addEventListener("load", () => {
-  if (loader) {
-    loader.classList.add("hidden");
-    setTimeout(() => loader.remove(), 700);
+  const activeLoader = document.getElementById("loader");
+  if (activeLoader) {
+    activeLoader.style.opacity = "0";
+    setTimeout(() => activeLoader.remove(), 500);
   }
+  void playMusic();
 });
 
 const updateVisitorCount = () => {
@@ -33,6 +38,64 @@ const updateVisitorCount = () => {
 
 updateVisitorCount();
 
+const setMusicButtonState = () => {
+  if (!musicToggle) return;
+  if (musicBlocked) {
+    musicToggle.classList.add("music-blocked");
+    musicToggle.textContent = "▶ Play music";
+    return;
+  }
+  musicToggle.classList.remove("music-blocked");
+  musicToggle.textContent = bgMusic && !bgMusic.paused ? "🔊" : "🔇";
+};
+
+const playMusic = async () => {
+  if (!bgMusic) return false;
+  bgMusic.volume = 0.55;
+  try {
+    await bgMusic.play();
+    musicBlocked = false;
+    musicEnabled = true;
+    setMusicButtonState();
+    return true;
+  } catch {
+    musicBlocked = true;
+    musicEnabled = true;
+    setMusicButtonState();
+    return false;
+  }
+};
+
+const pauseMusic = () => {
+  if (!bgMusic) return;
+  bgMusic.pause();
+  setMusicButtonState();
+};
+
+if (musicToggle && bgMusic) {
+  musicToggle.addEventListener("click", async () => {
+    if (bgMusic.paused) {
+      await playMusic();
+    } else {
+      musicEnabled = false;
+      pauseMusic();
+    }
+  });
+}
+
+const resumeMusicOnInteraction = () => {
+  if (bgMusic && bgMusic.paused) {
+    void playMusic();
+  }
+  document.removeEventListener("pointerdown", resumeMusicOnInteraction);
+  document.removeEventListener("keydown", resumeMusicOnInteraction);
+  document.removeEventListener("touchstart", resumeMusicOnInteraction);
+};
+
+document.addEventListener("pointerdown", resumeMusicOnInteraction);
+document.addEventListener("keydown", resumeMusicOnInteraction);
+document.addEventListener("touchstart", resumeMusicOnInteraction);
+
 if (toast) {
   window.showToast = (message) => {
     toast.textContent = message;
@@ -43,85 +106,6 @@ if (toast) {
 } else {
   window.showToast = () => {};
 }
-
-if (bgMusic) {
-  bgMusic.volume = 0.55;
-  bgMusic.preload = "auto";
-  bgMusic.loop = true;
-}
-
-let isMusicEnabled = false;
-let musicPromptShown = false;
-
-const setMusicButtonState = (playing) => {
-  if (!musicToggle) return;
-  if (playing) {
-    musicToggle.textContent = "🔊";
-    musicToggle.classList.remove("music-blocked");
-    musicToggle.setAttribute("aria-label", "Pause background music");
-  } else {
-    musicToggle.textContent = "Tap to Enable Music";
-    musicToggle.classList.add("music-blocked");
-    musicToggle.setAttribute("aria-label", "Enable background music");
-  }
-};
-
-const stopMusic = () => {
-  if (!bgMusic) return;
-  bgMusic.pause();
-  bgMusic.currentTime = 0;
-  isMusicEnabled = false;
-  setMusicButtonState(false);
-};
-
-const tryStartMusic = async () => {
-  if (!bgMusic || isMusicEnabled) return;
-  try {
-    await bgMusic.play();
-    isMusicEnabled = true;
-    setMusicButtonState(true);
-  } catch (error) {
-    if (!musicPromptShown) {
-      musicPromptShown = true;
-      setMusicButtonState(false);
-    }
-  }
-};
-
-if (musicToggle && bgMusic) {
-  musicToggle.addEventListener("click", async () => {
-    if (isMusicEnabled) {
-      stopMusic();
-      return;
-    }
-    await tryStartMusic();
-  });
-}
-
-if (bgMusic) {
-  bgMusic.addEventListener("play", () => {
-    isMusicEnabled = true;
-    setMusicButtonState(true);
-  });
-
-  bgMusic.addEventListener("pause", () => {
-    if (!bgMusic.ended) {
-      setMusicButtonState(false);
-    }
-  });
-}
-
-window.addEventListener("DOMContentLoaded", () => {
-  tryStartMusic();
-});
-
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) {
-    stopMusic();
-  }
-});
-window.addEventListener("pagehide", stopMusic);
-window.addEventListener("beforeunload", stopMusic);
 
 if (exploreBtn) {
   exploreBtn.addEventListener("click", () => {
@@ -160,144 +144,215 @@ const fighters = {
   gandhi: {
     title: "Mahatma Gandhi",
     image: "images/gandhi.jpg",
-    birth: "2 October 1869",
-    death: "30 January 1948",
-    place: "Porbandar, Gujarat",
-    contributions: "Satyagraha, non-violence, the Salt March, civil disobedience, and moral leadership",
+    meta: {
+      fullName: "Mohandas Karamchand Gandhi",
+      birth: "2 October 1869",
+      death: "30 January 1948",
+      birthplace: "Porbandar, Gujarat",
+      contributions: "Non-violent resistance, civil disobedience, and the movement for swaraj",
+      awards: "Time Magazine's Person of the Year (1930)",
+    },
     bio: [
-      "Mahatma Gandhi was born in Porbandar and became the moral compass of India’s freedom movement.",
-      "He championed truth, non-violence, and self-discipline as tools to challenge imperial rule.",
-      "His philosophy of satyagraha inspired millions to resist injustice with dignity and courage.",
-      "The Salt March of 1930 became one of the most powerful acts of civil disobedience in history.",
-      "He led the Quit India Movement and urged Indians to pursue freedom with peaceful determination.",
-      "Gandhiji’s simple lifestyle and spiritual discipline made him a symbol of humility and strength.",
-      "He believed that moral courage could overcome fear and oppression.",
-      "His teachings continue to influence social justice, peace, and democratic resistance worldwide.",
-      "He united people across regions, languages, and classes under a shared national purpose.",
-      "His legacy remains central to India’s understanding of freedom, equality, and human dignity."
-    ]
+      "Mahatma Gandhi led India’s freedom struggle with the principles of truth, sacrifice, and non-violence.",
+      "He believed that real strength came from moral courage and disciplined self-rule.",
+      "His campaigns against colonial laws inspired millions of ordinary citizens to stand with dignity.",
+      "The Salt March became a turning point that showed the power of peaceful resistance.",
+      "He also worked for communal harmony and social reform across the country.",
+      "Gandhiji’s simple lifestyle and deep discipline made him a symbol of humility and purpose.",
+      "He urged Indians to value self-reliance, spinning, and village industries.",
+      "His leadership shaped the emotional and spiritual direction of the independence movement.",
+      "Even today, his ideas continue to influence leaders, educators, and ordinary citizens.",
+      "His life remains a reminder that freedom is strongest when it is rooted in compassion.",
+    ],
   },
   bhagat: {
     title: "Bhagat Singh",
     image: "images/bhagat.jpg",
-    birth: "28 September 1907",
-    death: "23 March 1931",
-    place: "Banga, Punjab",
-    contributions: "Revolutionary activism, martyrdom, youth mobilisation, and anti-colonial courage",
+    meta: {
+      fullName: "Bhagat Singh",
+      birth: "28 September 1907",
+      death: "23 March 1931",
+      birthplace: "Banga, Punjab",
+      contributions: "Revolutionary resistance, public awakening, and fearless anti-colonial action",
+      awards: "No formal awards; remembered as a martyr and icon",
+    },
     bio: [
-      "Bhagat Singh was one of India’s bravest revolutionary thinkers and activists.",
-      "He joined the freedom struggle at a very young age and inspired countless students and youth.",
-      "He believed that sacrifice and courage were essential to end British oppression.",
-      "His fearless speeches and writings made him a symbol of passionate patriotism.",
-      "Bhagat Singh challenged the colonial order through direct action and unwavering conviction.",
-      "He became a lasting icon of courage for young Indians across generations.",
-      "His martyrdom at the age of 23 strengthened the resolve of the independence movement.",
-      "He stood for justice, dignity, and the right of people to live as free citizens.",
-      "His legacy continues to inspire modern ideals of selfless service and national pride.",
-      "He remains one of the most respected revolutionary heroes in India’s history."
-    ]
+      "Bhagat Singh became one of the most inspiring youth icons of the Indian freedom movement.",
+      "He chose courage over fear and devoted himself to the idea of a free nation.",
+      "His writings showed a sharp mind and a deep commitment to justice.",
+      "He challenged colonial authority with bold political action and fearless clarity.",
+      "His sacrifice at a young age transformed him into a lasting symbol of conviction.",
+      "He believed that freedom had to be earned through sacrifice and discipline.",
+      "His ideals continue to inspire students and young dreamers across India.",
+      "He remains a beacon of revolutionary spirit and national pride.",
+      "His life teaches that courage can emerge from the youngest hearts.",
+      "Bhagat Singh’s legacy still echoes in every celebration of bravery and patriotism.",
+    ],
   },
   bose: {
     title: "Subhas Chandra Bose",
     image: "images/bose.jpg",
-    birth: "23 January 1897",
-    death: "18 August 1945",
-    place: "Cuttack, Odisha",
-    contributions: "Indian National Army, Azad Hind Fauj, and mass mobilisation for independence",
+    meta: {
+      fullName: "Subhas Chandra Bose",
+      birth: "23 January 1897",
+      death: "18 August 1945",
+      birthplace: "Cuttack, Odisha",
+      contributions: "Formation of the Indian National Army and mobilisation of youth for freedom",
+      awards: "No formal awards; honoured as Netaji",
+    },
     bio: [
-      "Netaji Subhas Chandra Bose was one of the most dynamic leaders of the freedom struggle.",
-      "He believed that India needed both political action and armed resistance against colonial rule.",
-      "He founded the Indian National Army to fight for the nation’s liberation.",
-      "His leadership gave hope to thousands of Indians who wanted immediate action.",
-      "He inspired the nation with speeches that urged people to rise for freedom.",
-      "Netaji’s courage and organisational skill made him a towering figure in Indian history.",
-      "He gave the slogan Jai Hind, which became a powerful expression of patriotism.",
-      "His struggle proved that selfless leadership could renew the spirit of a nation.",
-      "He remains admired for his bold strategy and unwavering commitment to India.",
-      "His legacy continues to shine as a symbol of courage, sacrifice, and national resolve."
-    ]
+      "Netaji Subhas Chandra Bose gave the freedom movement a sharper edge of resolve and action.",
+      "He believed that India had to fight for independence with full commitment and discipline.",
+      "He founded the Indian National Army to confront colonial rule on the battlefield.",
+      "His leadership inspired thousands of young Indians to join the struggle.",
+      "He was a powerful orator whose words awakened national confidence.",
+      "His dream of a free India was built on courage, unity, and sacrifice.",
+      "He challenged the limits of passive resistance and pushed the movement forward.",
+      "His legacy lives on in the pride of the armed forces and the spirit of national service.",
+      "Even today, he is remembered as a fearless figure who refused to surrender hope.",
+      "Netaji’s story remains a vital chapter in India’s journey to freedom.",
+    ],
   },
   azad: {
     title: "Chandrashekhar Azad",
     image: "images/azad.jpg",
-    birth: "1 July 1906",
-    death: "27 February 1931",
-    place: "Alirajpur, Madhya Pradesh",
-    contributions: "Revolutionary leadership, Hindustan Socialist Republican Association, and fearless resistance",
+    meta: {
+      fullName: "Chandrashekhar Azad",
+      birth: "23 July 1906",
+      death: "27 February 1931",
+      birthplace: "Alirajpur, Madhya Pradesh",
+      contributions: "Revolutionary activism and resistance against British rule",
+      awards: "No formal awards; remembered as a martyr",
+    },
     bio: [
-      "Chandrashekhar Azad was a fearless revolutionary who chose courage over compromise.",
-      "He became known for his fierce commitment to India’s freedom and his refusal to surrender.",
-      "Azad joined the ranks of young revolutionaries who wanted to challenge British rule directly.",
+      "Chandrashekhar Azad was a fearless revolutionary whose spirit became a symbol of resistance.",
+      "He chose to remain unyielding even when the pressure of colonial rule intensified.",
+      "His commitment to liberty made him one of the most admired figures of the movement.",
+      "He worked with young revolutionaries to challenge the empire at every turn.",
+      "His famous resolve to never be captured alive became a legend in itself.",
       "He was deeply inspired by the ideals of sacrifice and justice.",
-      "His leadership helped strengthen the revolutionary movement in the 1920s and 1930s.",
-      "He is remembered for his immortal words that he would never be captured alive.",
-      "His martyrdom became a source of strength for future generations of freedom fighters.",
-      "He embodied the spirit of courage, discipline, and selfless patriotism.",
-      "His courage made him a shining example of revolutionary dedication to the nation.",
-      "Azad remains a symbol of valour and fearless resistance in Indian history."
-    ]
+      "His courage helped keep the flame of rebellion alive during difficult times.",
+      "He became a source of inspiration for generations of patriots and students.",
+      "His life proves that bravery can emerge from even the harshest circumstances.",
+      "Azad’s memory remains a powerful reminder of the cost of freedom.",
+    ],
   },
   lakshmibai: {
     title: "Rani Lakshmibai",
     image: "images/lakshmibai.jpg",
-    birth: "19 November 1828",
-    death: "18 June 1858",
-    place: "Varanasi, Uttar Pradesh",
-    contributions: "Resistance during the First War of Independence and leadership of Jhansi",
+    meta: {
+      fullName: "Rani Lakshmibai of Jhansi",
+      birth: "19 November 1835",
+      death: "18 June 1858",
+      birthplace: "Varanasi, Uttar Pradesh",
+      contributions: "Leadership during the First War of Independence and resistance against British expansion",
+      awards: "Honoured as a national icon and legendary warrior",
+    },
     bio: [
-      "Rani Lakshmibai of Jhansi became one of the most iconic women of the freedom struggle.",
-      "She rose in defence of her kingdom and the honour of her people.",
-      "Her courage during the First War of Independence inspired countless others to resist colonial rule.",
-      "She fought bravely on horseback and led her troops with extraordinary resolve.",
-      "Lakshmibai was not only a warrior but also a visionary leader.",
-      "She stood up for sovereignty, dignity, and the rights of her people.",
-      "Her leadership made her a lasting symbol of strength and sacrifice.",
-      "She remains an inspiration for women, soldiers, and patriots alike.",
-      "Her story continues to remind India of the cost of freedom and the power of courage.",
-      "She is remembered as one of the earliest and fiercest voices of resistance."
-    ]
+      "Rani Lakshmibai of Jhansi became an enduring symbol of courage and resistance.",
+      "She led her people with extraordinary determination during the First War of Independence.",
+      "Her bravery in battle inspired countless Indians to defend their homeland.",
+      "She stood as a queen who chose duty over comfort and fear.",
+      "Her leadership showed that courage can be both political and personal.",
+      "She remains a central figure in the history of India’s resistance.",
+      "Her story reminds us that freedom often begins with the strength of a single person.",
+      "She is admired for her tactical skill, resolve, and fierce love for her kingdom.",
+      "Her memory continues to inspire women, warriors, and leaders alike.",
+      "Rani Lakshmibai is a timeless emblem of valor and dignity.",
+    ],
   },
   ambedkar: {
     title: "Dr. B. R. Ambedkar",
     image: "images/ambedkar.jpg",
-    birth: "14 April 1891",
-    death: "6 December 1956",
-    place: "Mhow, Madhya Pradesh",
-    contributions: "Constitutional drafting, social justice, education reform, and legal equality",
+    meta: {
+      fullName: "Dr. Bhimrao Ramji Ambedkar",
+      birth: "14 April 1891",
+      death: "6 December 1956",
+      birthplace: "Mhow, Madhya Pradesh",
+      contributions: "Architect of the Indian Constitution and champion of social justice",
+      awards: "Bharat Ratna (1990)",
+    },
     bio: [
-      "Dr. B. R. Ambedkar was the chief architect of the Constitution of India.",
-      "He worked tirelessly to build a society based on justice, liberty, and equality.",
-      "His scholarship and legal insight shaped the modern democratic framework of India.",
-      "He fought against caste discrimination and worked for the dignity of every citizen.",
-      "Ambedkar believed that education and constitutional rights could transform society.",
-      "He gave voice to the marginalised and demanded social and political equality.",
-      "His leadership helped create a strong foundation for India’s republic.",
-      "He remains a guiding figure for those who seek justice and inclusion.",
-      "His life shows how knowledge, ethics, and courage can reshape a nation.",
-      "He is remembered as one of India’s greatest thinkers, reformers, and builders."
-    ]
-  }
+      "Dr. B. R. Ambedkar helped shape the constitutional and moral foundations of modern India.",
+      "He fought for equality, dignity, and the removal of caste-based injustice.",
+      "His scholarship and discipline made him one of the greatest thinkers of the nation.",
+      "He served as the chief architect of the Indian Constitution.",
+      "His work continues to influence law, education, and social reform.",
+      "He believed that justice had to be written into the very structure of society.",
+      "He gave voice to the aspirations of millions who had long been denied rights.",
+      "His life is a reminder that freedom also means equal opportunity and human dignity.",
+      "He remains an inspiration to those who seek fairness and inclusion.",
+      "Ambedkar’s legacy is essential to India’s democratic story.",
+    ],
+  },
+  patel: {
+    title: "Sardar Vallabhbhai Patel",
+    image: "images/patel.jpg",
+    meta: {
+      fullName: "Vallabhbhai Jhaverbhai Patel",
+      birth: "31 October 1875",
+      death: "15 December 1950",
+      birthplace: "Nadiad, Gujarat",
+      contributions: "Political integration of princely states and a strong, united India",
+      awards: "Bharat Ratna (1991)",
+    },
+    bio: [
+      "Sardar Vallabhbhai Patel was one of the most important architects of modern India.",
+      "He played a decisive role in integrating the princely states into the Indian Union.",
+      "His leadership helped preserve national unity in the early years after independence.",
+      "He was known for his calm resolve and practical wisdom.",
+      "He earned the trust of people through discipline, clarity, and unwavering service.",
+      "Patel’s efforts strengthened the political fabric of the new nation.",
+      "He stood for order, strength, and the idea of a united country.",
+      "His legacy is deeply connected with the idea of one India.",
+      "His statesmanship continues to inspire leaders who value cohesion and responsibility.",
+      "Sardar Patel remains a symbol of strength, unity, and service.",
+    ],
+  },
+  shastri: {
+    title: "Lal Bahadur Shastri",
+    image: "images/shastri.jpg",
+    meta: {
+      fullName: "Lal Bahadur Shastri",
+      birth: "2 October 1904",
+      death: "11 January 1966",
+      birthplace: "Mughalsarai, Uttar Pradesh",
+      contributions: "Leadership during the post-independence period and the slogan of Jai Jawan Jai Kisan",
+      awards: "Bharat Ratna (1966)",
+    },
+    bio: [
+      "Lal Bahadur Shastri became a respected leader known for humility and dedication.",
+      "He carried forward the values of simplicity, honesty, and public service.",
+      "His leadership reflected calmness under pressure and deep national responsibility.",
+      "He gave India the motto of Jai Jawan Jai Kisan, linking soldiers and farmers.",
+      "His words encouraged citizens to work with discipline and courage.",
+      "Shastri ji remains remembered for his moral strength and quiet resolve.",
+      "He helped shape the ethical tone of India’s political life.",
+      "His leadership during critical moments earned him great admiration.",
+      "He continues to inspire people who believe in simple living and strong values.",
+      "His legacy is a reminder that leadership can be humble and still powerful.",
+    ],
+  },
 };
 
 document.querySelectorAll(".fighter-card button").forEach((button) => {
   button.addEventListener("click", () => {
     const fighter = fighters[button.dataset.fighter];
     if (!fighter) return;
-    if (modalImage) modalImage.src = fighter.image;
+    if (modalImage) {
+      modalImage.src = fighter.image;
+      modalImage.alt = fighter.title;
+    }
     if (modalTitle) modalTitle.textContent = fighter.title;
     if (modalMeta) {
-      modalMeta.innerHTML = `
-        <div><span>Birth</span><strong>${fighter.birth}</strong></div>
-        <div><span>Death</span><strong>${fighter.death}</strong></div>
-        <div><span>Place</span><strong>${fighter.place}</strong></div>
-        <div><span>Major Contributions</span><strong>${fighter.contributions}</strong></div>
-      `;
+      modalMeta.innerHTML = Object.entries(fighter.meta)
+        .map(([label, value]) => `<div><strong>${label.replace(/([A-Z])/g, " $1").replace(/^./, (char) => char.toUpperCase())}</strong>${value}</div>`)
+        .join("");
     }
     if (modalBio) {
-      modalBio.innerHTML = fighter.bio.map((line) => `<p>${line}</p>`).join("");
+      modalBio.innerHTML = fighter.bio.map((paragraph) => `<p>${paragraph}</p>`).join("");
     }
     if (fighterModal) {
-      fighterModal.style.display = "flex";
       fighterModal.classList.add("show");
       fighterModal.setAttribute("aria-hidden", "false");
     }
@@ -309,9 +364,6 @@ const closeModalHandler = () => {
   if (fighterModal) {
     fighterModal.classList.remove("show");
     fighterModal.setAttribute("aria-hidden", "true");
-    setTimeout(() => {
-      fighterModal.style.display = "none";
-    }, 220);
   }
   document.body.classList.remove("modal-open");
 };
@@ -325,6 +377,17 @@ window.addEventListener("click", (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeModalHandler();
 });
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    pauseMusic();
+  } else if (musicEnabled) {
+    void playMusic();
+  }
+});
+
+window.addEventListener("pagehide", pauseMusic);
+window.addEventListener("beforeunload", pauseMusic);
 
 const updateScrollProgress = () => {
   const scrollTop = window.scrollY;
@@ -342,6 +405,18 @@ if (backToTop) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
+
+const applyFallbackImages = () => {
+  document.querySelectorAll("img").forEach((image) => {
+    image.addEventListener("error", () => {
+      if (image.dataset.fallbackApplied === "true") return;
+      image.dataset.fallbackApplied = "true";
+      image.src = "images/indianlogo.png";
+    }, { once: true });
+  });
+};
+
+applyFallbackImages();
 
 const createParticle = () => {
   const particle = document.createElement("div");

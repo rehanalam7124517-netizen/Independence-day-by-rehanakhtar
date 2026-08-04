@@ -20,13 +20,10 @@ document.querySelectorAll("button").forEach((button) => {
     const ripple = document.createElement("span");
     ripple.className = "ripple";
     const size = Math.max(this.clientWidth, this.clientHeight);
-    const rect = this.getBoundingClientRect();
-    const offsetX = event.clientX ? event.clientX - rect.left : rect.width / 2;
-    const offsetY = event.clientY ? event.clientY - rect.top : rect.height / 2;
     ripple.style.width = `${size}px`;
     ripple.style.height = `${size}px`;
-    ripple.style.left = `${offsetX - size / 2}px`;
-    ripple.style.top = `${offsetY - size / 2}px`;
+    ripple.style.left = `${event.offsetX - size / 2}px`;
+    ripple.style.top = `${event.offsetY - size / 2}px`;
     this.appendChild(ripple);
     setTimeout(() => ripple.remove(), 650);
   });

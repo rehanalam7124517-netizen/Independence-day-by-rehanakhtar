@@ -597,7 +597,7 @@ p, span, li, input, textarea {
 }
 
 .modal {
-  display: none;
+  display: flex;
   position: fixed;
   inset: 0;
   background: rgba(3, 9, 19, 0.82);
@@ -611,15 +611,14 @@ p, span, li, input, textarea {
 }
 
 .modal.show {
-  display: flex;
   opacity: 1;
   pointer-events: auto;
 }
 
 .modal-box {
-  width: min(860px, 100%);
+  width: min(900px, 100%);
   display: grid;
-  grid-template-columns: minmax(180px, 240px) 1fr;
+  grid-template-columns: minmax(180px, 260px) 1fr;
   gap: 24px;
   background: linear-gradient(145deg, rgba(10, 24, 40, 0.95), rgba(6, 16, 29, 0.95));
   border: 1px solid rgba(255,255,255,0.16);
@@ -628,6 +627,12 @@ p, span, li, input, textarea {
   position: relative;
   text-align: center;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  transform: translateY(18px) scale(0.98);
+  transition: transform 0.25s ease;
+}
+
+.modal.show .modal-box {
+  transform: translateY(0) scale(1);
 }
 
 .modal-box img {
@@ -640,6 +645,9 @@ p, span, li, input, textarea {
 
 .modal-content {
   text-align: left;
+  max-height: 72vh;
+  overflow-y: auto;
+  padding-right: 6px;
 }
 
 .modal-content h2 {
@@ -671,6 +679,10 @@ p, span, li, input, textarea {
   margin: 7px 0;
   color: #e9f1f7;
   font-size: 0.96rem;
+}
+
+.modal-bio p:first-child {
+  margin-top: 0;
 }
 
 #closeModal {
@@ -732,6 +744,33 @@ p, span, li, input, textarea {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
+}
+
+.tribute-footer {
+  padding: 0 20px 20px;
+}
+
+.tribute-spotlight {
+  background: linear-gradient(135deg, rgba(255,153,51,0.18), rgba(19,136,8,0.18));
+  border: 1px solid rgba(255,255,255,0.16);
+}
+
+.tribute-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.82rem;
+  color: #ffd59b;
+  margin-top: 0;
+}
+
+.footer-quote {
+  margin-top: 18px;
+  padding: 15px 18px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #f7f9fc;
+  font-style: italic;
 }
 
 footer {
