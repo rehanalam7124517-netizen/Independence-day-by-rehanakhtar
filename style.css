@@ -76,6 +76,17 @@ button {
   transition: box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
   font: inherit;
   text-align: center;
+  transform: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:active,
+.fighter-card:active,
+.india-card:active,
+.timeline-card:active,
+.nav-cta:active,
+.top-nav nav a:active {
+  transform: none !important;
 }
 
 section {
@@ -159,6 +170,8 @@ p, span, li, input, textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
   padding: 14px 20px;
   border-radius: 999px;
   z-index: 1200;
@@ -207,6 +220,10 @@ p, span, li, input, textarea {
   color: #fff;
   font-weight: 700;
   box-shadow: 0 10px 26px rgba(255, 153, 51, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
 #loader {
@@ -438,6 +455,7 @@ p, span, li, input, textarea {
   padding: 20px;
   box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
   transition: box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+  transform: none !important;
 }
 
 .fighter-card {
@@ -593,12 +611,12 @@ p, span, li, input, textarea {
   position: relative;
   text-align: center;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
-  transform: translateY(18px) scale(0.98);
+  transform: translateY(18px);
   transition: transform 0.25s ease;
 }
 
 .modal.show .modal-box {
-  transform: translateY(0) scale(1);
+  transform: translateY(0);
 }
 
 .modal-box img {
@@ -807,6 +825,10 @@ footer h3 {
     padding: 12px 14px;
   }
 
+  .brand {
+    flex: 1 1 auto;
+  }
+
   .top-nav nav {
     display: none;
   }
@@ -861,6 +883,11 @@ footer h3 {
   .top-nav {
     top: 10px;
     border-radius: 999px;
+    justify-content: center;
+  }
+
+  .brand {
+    justify-content: center;
   }
 
 }
